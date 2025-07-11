@@ -37,7 +37,7 @@ sso_project/
 
 1. **Clone the repository**:
 ```bash
-git clone <repository-url>
+git clone https://github.com/nguyendan07/sso_project.git
 cd sso_project
 ```
 
