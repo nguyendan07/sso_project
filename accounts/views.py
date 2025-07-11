@@ -4,7 +4,12 @@ from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.sessions.models import Session
 from django.middleware.csrf import get_token
-from django.http import Http404
+from django.http import Http404, HttpResponse
+
+
+def healthz(request):
+    """Health check endpoint."""
+    return HttpResponse('OK')
 
 
 class HomeView(LoginRequiredMixin, View):
