@@ -1,0 +1,209 @@
+{% extends 'base.html' %}
+
+{% block title %}OIDC Configuration{% endblock %}
+
+{% block extra_css %}
+<style>
+    .config-form {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    .form-group {
+        margin-bottom: 20px;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+    .help-text {
+        font-size: 12px;
+        color: #666;
+        margin-top: 5px;
+    }
+    .form-section {
+        border: 1px solid #e0e0e0;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+    }
+    .form-section h3 {
+        margin-top: 0;
+        color: #333;
+    }
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+    .provider-examples {
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 4px;
+        margin-top: 10px;
+    }
+    .alert {
+        padding: 10px;
+        margin-bottom: 20px;
+        border-radius: 4px;
+    }
+    .alert-success {
+        background-color: #d4edda;
+        border: 1px solid #c3e6cb;
+        color: #155724;
+    }
+    .alert-error {
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+        color: #721c24;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="config-form">
+    <h1>OIDC Configuration</h1>
+    
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <!-- Provider Selection -->
+        <div class="form-section">
+            <h3>Provider Selection</h3>
+            
+            <div class="form-group">
+                <label for="{{ form.provider_type.id_for_label }}">{{ form.provider_type.label }}</label>
+                {{ form.provider_type }}
+                <div class="help-text">{{ form.provider_type.help_text }}</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.provider_base_url.id_for_label }}">{{ form.provider_base_url.label }}</label>
+                {{ form.provider_base_url }}
+                <div class="help-text">{{ form.provider_base_url.help_text }}</div>
+            </div>
+            
+            <div class="provider-examples">
+                <strong>Examples:</strong>
+                <ul>
+                    <li><strong>Keycloak:</strong> https://your-keycloak.com/auth/realms/master</li>
+                    <li><strong>Google:</strong> Leave base URL empty (uses standard Google endpoints)</li>
+                    <li><strong>Auth0:</strong> https://your-domain.auth0.com</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Basic Settings -->
+        <div class="form-section">
+            <h3>Basic OIDC Settings</h3>
+            
+            <div class="form-group">
+                <label for="{{ form.oidc_rp_client_id.id_for_label }}">{{ form.oidc_rp_client_id.label }}</label>
+                {{ form.oidc_rp_client_id }}
+                <div class="help-text">{{ form.oidc_rp_client_id.help_text }}</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.oidc_rp_client_secret.id_for_label }}">{{ form.oidc_rp_client_secret.label }}</label>
+                {{ form.oidc_rp_client_secret }}
+                <div class="help-text">{{ form.oidc_rp_client_secret.help_text }}</div>
+            </div>
+        </div>
+        
+        <!-- Provider Endpoints -->
+        <div class="form-section">
+            <h3>Provider Endpoints</h3>
+            
+            <div class="form-group">
+                <label for="{{ form.oidc_op_authorization_endpoint.id_for_label }}">{{ form.oidc_op_authorization_endpoint.label }}</label>
+                {{ form.oidc_op_authorization_endpoint }}
+                <div class="help-text">{{ form.oidc_op_authorization_endpoint.help_text }}</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.oidc_op_token_endpoint.id_for_label }}">{{ form.oidc_op_token_endpoint.label }}</label>
+                {{ form.oidc_op_token_endpoint }}
+                <div class="help-text">{{ form.oidc_op_token_endpoint.help_text }}</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.oidc_op_user_endpoint.id_for_label }}">{{ form.oidc_op_user_endpoint.label }}</label>
+                {{ form.oidc_op_user_endpoint }}
+                <div class="help-text">{{ form.oidc_op_user_endpoint.help_text }}</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.oidc_op_jwks_endpoint.id_for_label }}">{{ form.oidc_op_jwks_endpoint.label }}</label>
+                {{ form.oidc_op_jwks_endpoint }}
+                <div class="help-text">{{ form.oidc_op_jwks_endpoint.help_text }}</div>
+            </div>
+        </div>
+        
+        <!-- Optional Settings -->
+        <div class="form-section">
+            <h3>Optional Settings</h3>
+            
+            <div class="form-group">
+                <label for="{{ form.oidc_rp_sign_algo.id_for_label }}">{{ form.oidc_rp_sign_algo.label }}</label>
+                {{ form.oidc_rp_sign_algo }}
+                <div class="help-text">{{ form.oidc_rp_sign_algo.help_text }}</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.oidc_rp_scopes.id_for_label }}">{{ form.oidc_rp_scopes.label }}</label>
+                {{ form.oidc_rp_scopes }}
+                <div class="help-text">{{ form.oidc_rp_scopes.help_text }}</div>
+            </div>
+        </div>
+        
+        <button type="submit" class="btn-primary">Save Configuration</button>
+        <a href="{% url 'home' %}" class="btn-secondary">Cancel</a>
+    </form>
+</div>
+
+<script>
+function fillProviderEndpoints() {
+    const providerType = document.getElementById('id_provider_type').value;
+    const baseUrl = document.getElementById('id_provider_base_url').value;
+    
+    if (providerType === 'keycloak' && baseUrl) {
+        document.getElementById('id_oidc_op_authorization_endpoint').value = baseUrl + '/protocol/openid-connect/auth';
+        document.getElementById('id_oidc_op_token_endpoint').value = baseUrl + '/protocol/openid-connect/token';
+        document.getElementById('id_oidc_op_user_endpoint').value = baseUrl + '/protocol/openid-connect/userinfo';
+        document.getElementById('id_oidc_op_jwks_endpoint').value = baseUrl + '/protocol/openid-connect/certs';
+    } else if (providerType === 'google') {
+        document.getElementById('id_oidc_op_authorization_endpoint').value = 'https://accounts.google.com/o/oauth2/v2/auth';
+        document.getElementById('id_oidc_op_token_endpoint').value = 'https://oauth2.googleapis.com/token';
+        document.getElementById('id_oidc_op_user_endpoint').value = 'https://openidconnect.googleapis.com/v1/userinfo';
+        document.getElementById('id_oidc_op_jwks_endpoint').value = 'https://www.googleapis.com/oauth2/v3/certs';
+    } else if (providerType === 'auth0' && baseUrl) {
+        document.getElementById('id_oidc_op_authorization_endpoint').value = baseUrl + '/authorize';
+        document.getElementById('id_oidc_op_token_endpoint').value = baseUrl + '/oauth/token';
+        document.getElementById('id_oidc_op_user_endpoint').value = baseUrl + '/userinfo';
+        document.getElementById('id_oidc_op_jwks_endpoint').value = baseUrl + '/.well-known/jwks.json';
+    }
+}
+</script>
+{% endblock %}

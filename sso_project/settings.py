@@ -15,9 +15,9 @@ import os
 from pathlib import Path
 
 import dj_database_url
-
 # Load environment variables from .env file
 from dotenv import load_dotenv
+
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
