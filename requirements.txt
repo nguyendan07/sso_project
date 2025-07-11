@@ -19,12 +19,16 @@ django==5.2.4
     #   sso-project (pyproject.toml)
     #   dj-database-url
     #   mozilla-django-oidc
+gunicorn==23.0.0
+    # via sso-project (pyproject.toml)
 idna==3.10
     # via requests
 josepy==2.1.0
     # via mozilla-django-oidc
 mozilla-django-oidc==4.0.1
     # via sso-project (pyproject.toml)
+packaging==25.0
+    # via gunicorn
 pycparser==2.22
     # via cffi
 requests==2.32.4
