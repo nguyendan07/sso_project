@@ -16,18 +16,23 @@ from pathlib import Path
 
 import dj_database_url
 
+# Load environment variables from .env file
+from dotenv import load_dotenv
+load_dotenv()
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Config parser for backward compatibility
 conf_parser = configparser.ConfigParser()
 conf_parser.read(os.getenv('CONFIG_FILE', 'config.ini'))
 file_config = conf_parser['DEFAULT']
 
 
 def get_config(name, default=None):
-    # Get the value from the config file, or the environment variable, or the default value
-    return file_config.get(name, os.getenv(name, default))
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
+    """Get configuration from environment variables, config file, or default."""
+    # Priority: Environment Variable > Config File > Default
+    return os.getenv(name, file_config.get(name, default))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -44,8 +49,7 @@ SECRET_KEY = file_config.get(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
-
+ALLOWED_HOSTS = get_config('ALLOWED_HOSTS', '*').split(',')
 
 # Application definition
 
@@ -146,12 +150,11 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
+# Authentication
 AUTHENTICATION_BACKENDS = (
     'accounts.auth.CustomOIDCAuthenticationBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
-
 
 AUTH_USER_MODEL = 'accounts.User'
 
@@ -160,7 +163,7 @@ LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", get_config('HTTP_X_FORWARDED_PROTO', 'https'))
 
-# mozilla-django-oidc settings
+# OIDC Settings
 OIDC_RP_CLIENT_ID = get_config('OIDC_RP_CLIENT_ID', '')
 OIDC_RP_CLIENT_SECRET = get_config('OIDC_RP_CLIENT_SECRET', '')
 OIDC_OP_AUTHORIZATION_ENDPOINT = get_config('OIDC_OP_AUTHORIZATION_ENDPOINT', '')

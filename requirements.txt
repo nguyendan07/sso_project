@@ -31,6 +31,8 @@ packaging==25.0
     # via gunicorn
 pycparser==2.22
     # via cffi
+python-dotenv==1.1.1
+    # via sso-project (pyproject.toml)
 requests==2.32.4
     # via mozilla-django-oidc
 sqlparse==0.5.3
