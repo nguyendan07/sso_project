@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}SSO Debug Info{% endblock %}
+
+{% block content %}
+    <h1>Debug Information</h1>
+    
+    <form action="{% url 'oidc_logout' %}" method="post">
+        {{ csrf_token_html|safe }}
+        <input type="submit" value="Logout" class="logout-btn" />
+    </form>
+
+    <div>
+        <h2>User Info</h2>
+        <div class="user-info">
+            <p><strong>Email:</strong> {{ request.user.email|default:"Not available" }}</p>
+            <p><strong>Username:</strong> {{ request.user.username|default:"Not available" }}</p>
+            <p><strong>First Name:</strong> {{ request.user.first_name|default:"Not available" }}</p>
+            <p><strong>Last Name:</strong> {{ request.user.last_name|default:"Not available" }}</p>
+        </div>
+        
+        <h2>OIDC Session Data</h2>
+        <div class="session-info">
+            {% if session_data.oidc_access_token %}
+                <p>Access Token Present: ✓</p>
+                <p>Access Token Length: {{ session_data.oidc_access_token|length }}</p>
+            {% else %}
+                <p>Access Token: Not available</p>
+            {% endif %}
+            
+            {% if session_data.oidc_id_token %}
+                <p>ID Token Present: ✓</p>
+                <p>ID Token Length: {{ session_data.oidc_id_token|length }}</p>
+            {% else %}
+                <p>ID Token: Not available</p>
+            {% endif %}
+        </div>
+        
+        <h2>Session Info</h2>
+        <div class="session-info">
+            <p>Session Key: {{ request.session.session_key }}</p>
+            <p>Session Age: {{ request.session.get_session_cookie_age }}</p>
+        </div>
+        
+        <details>
+            <summary>Request Headers (Click to expand)</summary>
+            <pre>{{ request.META|pprint }}</pre>
+        </details>
+    </div>
+{% endblock %}

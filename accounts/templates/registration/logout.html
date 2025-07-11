@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}SSO Logout{% endblock %}
+
+{% block content %}
+    <h1>Logout Successful</h1>
+    
+    <div class="logout-success">
+        <h2>You have been successfully logged out</h2>
+        <p>Thank you for using our SSO system. Your session has been terminated.</p>
+    </div>
+    
+    <div class="actions">
+        <a href="{% url 'oidc_authentication_init' %}" class="login-btn">Login Again</a>
+    </div>
+{% endblock %}

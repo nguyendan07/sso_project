@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}SSO Login{% endblock %}
+
+{% block content %}
+    <h1>SSO Authentication</h1>
+    
+    {% if user.is_authenticated %}
+        <div class="user-info">
+            <h2>Welcome!</h2>
+            <p><strong>Email:</strong> {{ user.email|default:"Not available" }}</p>
+            <p><strong>Username:</strong> {{ user.username|default:"Not available" }}</p>
+            <p><strong>First Name:</strong> {{ user.first_name|default:"Not available" }}</p>
+            <p><strong>Last Name:</strong> {{ user.last_name|default:"Not available" }}</p>
+        </div>
+        
+        <div class="actions">
+            <form action="{% url 'oidc_logout' %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <input type="submit" value="Logout" class="logout-btn">
+            </form>
+            
+            <a href="{% url 'home' %}" class="dashboard-btn">Go to Dashboard</a>
+        </div>
+    {% else %}
+        <div class="auth-prompt">
+            <h2>Please login to continue</h2>
+            <a href="{% url 'oidc_authentication_init' %}" class="login-btn">Login with SSO</a>
+        </div>
+    {% endif %}
+{% endblock %}
